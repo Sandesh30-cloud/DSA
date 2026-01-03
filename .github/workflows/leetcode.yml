@@ -9,6 +9,9 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Sync LeetCode
         uses: docker://ghcr.io/zhengkyl/leetcode-sync:latest
         env:
