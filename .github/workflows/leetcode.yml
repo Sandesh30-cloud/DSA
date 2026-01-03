@@ -1,9 +1,9 @@
 name: Sync LeetCode Solutions
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 */6 * * *"
-  workflow_dispatch:
 
 jobs:
   sync:
@@ -12,6 +12,8 @@ jobs:
       - name: Sync LeetCode
         uses: joshcai/leetcode-sync@v1.7
         with:
-          leetcode-cookie: ${{ secrets.LEETCODE_COOKIE }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          leetcode-session: ${{ secrets.LEETCODE_SESSION }}
+          leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
           destination-folder: leetcode
           verbose: true
