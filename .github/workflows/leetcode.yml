@@ -21,6 +21,9 @@ jobs:
       - name: Install leetcode-cli
         run: npm install -g leetcode-cli
 
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
       - name: Configure leetcode-cli
         env:
           LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
@@ -33,9 +36,11 @@ jobs:
       - name: Export accepted solutions
         run: |
           mkdir -p leetcode
-          leetcode list --status=AC | awk '{print $2}' | while read problem; do
-            leetcode show "$problem" -g -o leetcode/
-          done
+          leetcode list --status=AC --json \
+            | jq -r '.[].slug' \
+            | while read slug; do
+                leetcode show "$slug" -g -o leetcode/ || true
+              done
 
       - name: Commit and push changes
         run: |
