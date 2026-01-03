@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p leetcode
           leetcode list --status=AC | awk '{print $2}' | while read problem; do
-            leetcode show "$problem" -g -l python -o leetcode/ || true
+            leetcode show "$problem" -g -o leetcode/
           done
 
       - name: Commit and push changes
